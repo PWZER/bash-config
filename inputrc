@@ -1,0 +1,6 @@
+# ls 命令 tab 补全显示颜色, bash >= 4.2
+set colored-stats on
+set colored-completion-prefix on
+
+# 命令行使用 vi 模式
+# set editing-mode vi
