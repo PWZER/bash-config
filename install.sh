@@ -57,6 +57,9 @@ find_python_executable_path_and_link_file
 # tmux config
 link_file ${CUR_DIR}/tmux.conf ${HOME}/.tmux.conf
 
+# ssh config
+link_file ${CUR_DIR}/ssh/config ${HOME}/.ssh/config
+
 # vim configs
 link_file ${CUR_DIR}/vim/vimrc ${HOME}/.vimrc
 link_file ${CUR_DIR}/vim/solarized.vim ${HOME}/.vim/colors/solarized.vim
@@ -75,3 +78,5 @@ if [ ! -f "${ycm_core_so}" ]; then
     cd ${CUR_DIR}
 fi
 link_file ${ycm_dir}/third_party/ycmd/.ycm_extra_conf.py ${HOME}/.ycm_extra_conf.py
+
+echo "Success"

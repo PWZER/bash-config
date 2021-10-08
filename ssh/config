@@ -1,0 +1,11 @@
+Host *
+    Port 22
+    SendEnv no
+    Protocol 2
+    LogLevel quiet
+    ForwardAgent yes
+    ServerAliveInterval 30
+    PubkeyAuthentication yes
+    StrictHostKeyChecking no
+    UserKnownHostsFile /dev/null
+    # IdentityFile ~/.ssh/id_rsa
