@@ -74,6 +74,7 @@ ycm_dir=${HOME}/.vim/plugged/YouCompleteMe
 ycm_core_so=$(find ${ycm_dir}/third_party/ycmd -name "ycm_core.*.so")
 if [ ! -f "${ycm_core_so}" ]; then
     cd ${HOME}/.vim/plugged/YouCompleteMe
+    git submodule update --init --recursive
     ./install.sh --clang-completer
     cd ${CUR_DIR}
 fi
