@@ -43,7 +43,7 @@ bash ${CUR_DIR}/auto.sh
 link_file ${CUR_DIR}/bashrc.sh ${HOME}/.bashrc
 link_file ${CUR_DIR}/profile.sh ${HOME}/.profile
 link_file ${CUR_DIR}/inputrc ${HOME}/.inputrc
-if [ -e ${HOME}/.bash_profile ]; then
+if [[ -e ${HOME}/.bash_profile || -L ${HOME}/.bash_profile ]]; then
     rm -rf ${HOME}/.bash_profile
 fi
 
