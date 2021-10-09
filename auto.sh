@@ -138,7 +138,7 @@ function set_git_default_user_name_and_email() {
         return
     fi
 
-    user_name="$(git config --global --default "" --get user.name)"
+    user_name=$(git config --global --get user.name || echo -n "")
     while [ -z "${git_default_user_name}" ]
     do
         if [ -z "${user_name}" ]; then
@@ -153,7 +153,7 @@ function set_git_default_user_name_and_email() {
     done
     git config --global user.name "${git_default_user_name}"
 
-    user_email=$(git config --global --default "" --get user.email)
+    user_email=$(git config --global --get user.email || echo -n "")
     while [ -z "${git_default_user_email}" ]
     do
         if [ -z "${user_email}" ]; then
