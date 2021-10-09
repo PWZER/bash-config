@@ -71,7 +71,6 @@ Plug 'vim-syntastic/syntastic'
 Plug 'scrooloose/nerdcommenter'
 
 " 状态栏
-Plug 'Lokaltog/vim-powerline'
 Plug 'vim-airline/vim-airline'
 Plug 'vim-airline/vim-airline-themes'
 
@@ -169,7 +168,6 @@ nnoremap <leader>gd :YcmCompleter GoToDefinitionElseDeclaration<CR>
 " ===== Plugin 'vim-airline/vim-airline' =====
 "let g:solarized_termcolors=256
 "let g:solarized_termtrans=1
-let g:airline_powerline_fonts = 1
 let g:airline_theme='solarized'
 "let g:airline_theme='molokai'
 let g:airline#extensions#tabline#enabled=1

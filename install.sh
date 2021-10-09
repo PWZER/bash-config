@@ -63,7 +63,7 @@ link_file ${CUR_DIR}/ssh/config ${HOME}/.ssh/config
 # vim configs
 link_file ${CUR_DIR}/vim/vimrc ${HOME}/.vimrc
 link_file ${CUR_DIR}/vim/solarized.vim ${HOME}/.vim/colors/solarized.vim
-link_file ${CUR_DIR}/vim/vim_plug.vim ${HOME}/.vim/autoload/plug.vim
+link_file ${CUR_DIR}/vim/plug.vim ${HOME}/.vim/autoload/plug.vim
 
 # vim plugs
 vim +PlugInstall +qall
