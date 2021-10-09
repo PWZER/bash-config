@@ -37,6 +37,10 @@ function find_python_executable_path_and_link_file() {
     fi
 }
 
+#use fastgit
+#git config --global url."https://hub.fastgit.org/".insteadOf "https://github.com/"
+#git config protocol.https.allow always
+
 bash ${CUR_DIR}/auto.sh
 
 # bash config
