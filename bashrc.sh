@@ -3,8 +3,13 @@ if [ -r /etc/bashrc ]; then
 fi
 
 # 被后面所依赖，必须放在最前面
-if [[ "$(uname)" = "Darwin" && -d /usr/local/opt/coreutils/libexec/gnubin ]]; then
-    export PATH=/usr/local/opt/coreutils/libexec/gnubin:${PATH}
+if [ "$(uname)" = "Darwin" ]; then
+    if [ -d /usr/local/opt/gnu-getopt/bin ]; then
+        export PATH=/usr/local/opt/gnu-getopt/bin:${PATH}
+    fi
+    if [ -d "/usr/local/opt/coreutils/libexec/gnubin" ]; then
+        export PATH=/usr/local/opt/coreutils/libexec/gnubin:${PATH}
+    fi
 fi
 
 alias ssh="ssh -A"

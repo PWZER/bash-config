@@ -1,7 +1,15 @@
 # bash-config
 
+# MacOS
+
 ```bash
-git clone git@github.com:PWZER/bash-config.git ~/.bash
+brew install coreutils gnu-getopt
+```
+
+# Install
+
+```bash
+git clone https://github.com/PWZER/bash-config.git ~/.bash
 
 ./install.sh
 ```
