@@ -44,7 +44,7 @@ function link_file() {
         mkdir -p $(dirname ${dst})
     fi
 
-    if [[ ! -e "${dst}" || "$(realpath ${dst})" != "${src}" ]]; then
+    if [ ! -e "${dst}" ] || [ ! "$(realpath ${dst})" = "${src}" ]; then
         ln -sf ${src} ${dst}
     fi
 }
@@ -55,14 +55,14 @@ function find_python_executable_path_and_link_file() {
     fi
 
     python3_path=$(which python3)
-    if [[ ! -z "${python3_path}" && -x "${python3_path}" ]]; then
+    if [ ! -z "${python3_path}" ] && [ -x "${python3_path}" ]; then
         link_file ${python3_path} ${HOME}/.local/bin/python
         echo "using ${python3_path}"
         return
     fi
 
     python_path=${which python}
-    if [[ ! -z "${python_path}" && -x "${python_path}" ]]; then
+    if [ ! -z "${python_path}" ] && [ -x "${python_path}" ]; then
         link_file ${python_path} ${HOME}/.local/bin/python
         echo "using ${python_path}"
         return
@@ -139,11 +139,11 @@ set_git_global_configs
 link_file ${CUR_DIR}/bashrc.sh ${HOME}/.bashrc
 link_file ${CUR_DIR}/profile.sh ${HOME}/.profile
 link_file ${CUR_DIR}/inputrc ${HOME}/.inputrc
-if [[ -e ${HOME}/.bash_profile || -L ${HOME}/.bash_profile ]]; then
+if [ -e ${HOME}/.bash_profile ] || [ -L ${HOME}/.bash_profile ]; then
     rm -rf ${HOME}/.bash_profile
 fi
 
-if [[ ! -e ${HOME}/.config || "$(realpath ${HOME}/.config)" != ${CUR_DIR}/config ]]; then
+if [ ! -e ${HOME}/.config ] || [ "$(realpath ${HOME}/.config)" != ${CUR_DIR}/config ]; then
     rm -rf ${HOME}/.config
     ln -sf ${CUR_DIR}/config ${HOME}/.config
 fi
