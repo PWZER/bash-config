@@ -5,12 +5,13 @@ set -o errexit
 user_name=""
 user_email=""
 network_device=""
+use_fastgit=0
 disabled_vim_plugin=0
 
 
-TEMP=`getopt -o h  --long help,no-vim-plug,name:,hostname:,email:,device: -- "$@"`
+TEMP=`getopt -o h  --long help,fastgit,no-vim-plug,name:,hostname:,email:,device: -- "$@"`
 eval set -- "$TEMP"
-USAGE="Usage: ./install.sh [--name=<name>] [--email=<email>] [--device=<device> | --hostname=<hostname>] [--no-vim-plug]"
+USAGE="Usage: ./install.sh [--no-vim-plug] [--fastgit] [--name=<name>] [--email=<email>] [--device=<device> | --hostname=<hostname>]"
 
 while true ; do
     case "$1" in
@@ -23,7 +24,9 @@ while true ; do
         --hostname)
             current_host_ipv4_addr=$2; shift 2;;
         --no-vim-plug)
-            IFS=","; disabled_vim_plugin=1; unset IFS; shift 1;;
+            disabled_vim_plugin=1; shift 1;;
+        --fastgit)
+            use_fastgit=1; shift 1;;
         -h|--help)
             echo ${USAGE}; exit 0; shift 1;;
         --) shift; break;;
@@ -103,12 +106,14 @@ function set_git_global_configs() {
 
 function install_vim_plugins() {
     #use fastgit
-    #git config --global url."https://hub.fastgit.org/".insteadOf "https://github.com/"
-    #git config protocol.https.allow always
+    if [ ${use_fastgit} -eq 1 ]; then
+        git config protocol.https.allow always
+        git config --global url."https://hub.fastgit.org/".insteadOf "https://github.com/"
+    fi
 
     # vim plugs
-    vim +PlugInstall +qall
-    # vim +PlugUpdate +qall
+    #vim +PlugInstall +qall
+    vim +PlugUpdate +qall
 
     # compile YouCompleteMe
     ycm_dir=${HOME}/.vim/plugged/YouCompleteMe
@@ -120,6 +125,10 @@ function install_vim_plugins() {
         cd ${CUR_DIR}
     fi
     link_file ${ycm_dir}/third_party/ycmd/.ycm_extra_conf.py ${HOME}/.ycm_extra_conf.py
+
+    if [ ${use_fastgit} -eq 1 ]; then
+        git config --global --unset url."https://hub.fastgit.org/".insteadOf
+    fi
 }
 
 source ${CUR_DIR}/auto.sh
