@@ -29,21 +29,19 @@ function export_auto_path() {
     fi
 }
 
-function export_current_host_ipv4_addr() {
-    devices=()
-    ips=()
+function _list_host_network_devices() {
+    network_devices=()
+
+    pattern="inet [0-9]{1,3}.[0-9]{1,3}.[0-9]{1,3}.[0-9]{1,3}"
     if [ "$(uname)" = "Darwin" ]; then
         if [ -z "$(which ifconfig)" ]; then
             return
         fi
         for device in $(ifconfig -l)
         do
-            ip=$(ifconfig ${device} | \
-                grep -oE "inet [0-9]{1,3}.[0-9]{1,3}.[0-9]{1,3}.[0-9]{1,3}" | \
-                awk '{print $2}')
-            if [[ ! -z "${ip}" && "${ip}" != "127.0.0.1" ]]; then
-                devices+=(${device})
-                ips+=(${ip})
+            ip=$(ifconfig ${device} | grep -oE "${pattern}" | awk '{print $2}')
+            if [ ! -z "${ip}" ] && [ ! "${ip}" = "127.0.0.1" ]; then
+                network_devices+=("${device}: ${ip}")
             fi
         done
     else
@@ -52,127 +50,34 @@ function export_current_host_ipv4_addr() {
         fi
         while read line; do
             device=$(echo ${line} | awk '{print $2}')
-            ip=$(echo ${line} | \
-                grep -oE "inet [0-9]{1,3}.[0-9]{1,3}.[0-9]{1,3}.[0-9]{1,3}" | \
-                awk '{print $2}')
-            if [[ ! -z "${device}" && ! -z "${ip}" && "${ip}" != "127.0.0.1" ]]; then
-                devices+=(${device})
-                ips+=(${ip})
+            ip=$(echo ${line} | grep -oE "${pattern}" | awk '{print $2}')
+            if [ ! -z "${device}" ] && [  ! -z "${ip}" ] && [ ! "${ip}" = "127.0.0.1" ]; then
+                network_devices+=("${device}: ${ip}")
             fi
         done <<< $(ip -o -4 addr)
     fi
+}
 
-    num=${#devices[@]}
-
-    if [[ ${num} == 1 ]]; then
-        current_host_ipv4_addr=${ips[0]}
-    elif [[ ${num} > 1 ]]; then
-        while [ -z "${current_host_ipv4_addr}" ]
-        do
-            cur_device=""
-            echo "------------------------------------------"
-            for ((i=0; i<${num}; i++))
-            do
-                echo "${devices[i]}: ${ips[i]}"
-                if [ "${ips[i]}" == "${CURRENT_HOST_IPV4_ADDR}" ]; then
-                    cur_device=${devices[i]}
-                fi
-            done
-            echo "------------------------------------------"
-
-            if [ -z "${cur_device}" ]; then
-                echo -n "select network interface: "
-            else
-                echo -n "select network interface [default: ${cur_device}]: "
-            fi
-
-            read device
-            if [[ ! -z "${cur_device}" && -z "${device}" ]]; then
-                device=${cur_device}
-            fi
-
-            for ((i=0; i<${num}; i++))
-            do
-                if [ "${devices[i]}" = "${device}" ]; then
-                    current_host_ipv4_addr=${ips[i]}
-                    break
-                fi
-            done
-        done
-    fi
-
+function export_current_host_ipv4_addr() {
     if [ -z "${current_host_ipv4_addr}" ]; then
-        current_host_ipv4_addr="localhost"
+        _list_host_network_devices
+
+        if [ ${#network_devices[@]} -eq 1 ]; then
+            current_host_ipv4_addr=$(echo ${network_devices[0]} | awk '{print $2}')
+        elif [ ${#network_devices[@]} -gt 1 ]; then
+            PS3="select network interface: "
+            select cur_device in "${network_devices[@]}"; do
+                current_host_ipv4_addr=$(echo ${cur_device} | awk '{print $2}')
+                break
+            done
+        fi
+
+        if [ -z "${current_host_ipv4_addr}" ]; then
+            current_host_ipv4_addr="localhost"
+        fi
     fi
 
     echo "export CURRENT_HOST_IPV4_ADDR=${current_host_ipv4_addr}" >> ${TMP_FILE}
-}
-
-function export_current_host_ipv4_addr_v2() {
-    current_host_ipv4_addr=$(echo ${SSH_CONNECTION} | awk "{print \$3}")
-    if [ -z $current_host_ipv4_addr ] && [ ! -z ${DEFAULT_NETWORK_DEVICE} ]; then
-        if [ $(uname) = "Darwin" ]; then
-            current_host_ipv4_addr=$( \
-                ifconfig ${DEFAULT_NETWORK_DEVICE} | \
-                grep -oE "inet [0-9]{1,3}.[0-9]{1,3}.[0-9]{1,3}.[0-9]{1,3}" | \
-                awk "{print \$2}")
-        elif [ $(uname) = "Linux" ]; then
-            current_host_ipv4_addr=$(\
-                ip -o -4 addr show ${DEFAULT_NETWORK_DEVICE} | \
-                egrep -vE "127.0.0.1| docker" | \
-                grep -oE "inet [0-9]{1,3}.[0-9]{1,3}.[0-9]{1,3}.[0-9]{1,3}" | \
-                head -n1 | \
-                awk "{print \$2}")
-        fi
-    fi
-
-    if [ -z "${current_host_ipv4_addr}" ]; then
-        current_host_ipv4_addr="localhost"
-    fi
-
-    echo "export CURRENT_HOST_IPV4_ADDR=${current_host_ipv4_addr}" >> ${TMP_FILE}
-}
-
-function set_git_default_user_name_and_email() {
-    if [ -z "$(which git)" ]; then
-        return
-    fi
-
-    user_name=$(git config --global --get user.name || echo -n "")
-    while [ -z "${git_default_user_name}" ]
-    do
-        if [ -z "${user_name}" ]; then
-            echo -n "set git global default user.name: "
-        else
-            echo -n "set git global default user.name [default: ${user_name}]: "
-        fi
-        read git_default_user_name
-        if [[ ! -z "${user_name}" && -z "${git_default_user_name}" ]]; then
-            git_default_user_name=${user_name}
-        fi
-    done
-    git config --global user.name "${git_default_user_name}"
-
-    user_email=$(git config --global --get user.email || echo -n "")
-    while [ -z "${git_default_user_email}" ]
-    do
-        if [ -z "${user_email}" ]; then
-            echo -n "set git global default user.email: "
-        else
-            echo -n "set git global default user.email [default: ${user_email}]: "
-        fi
-        read git_default_user_email
-        if [[ ! -z "${user_email}" && -z "${git_default_user_email}" ]]; then
-            git_default_user_email=${user_email}
-        fi
-    done
-    git config --global user.email "${git_default_user_email}"
-
-    git config --global core.editor vim
-    git config --global http.sslVerify false
-    git config --global color.diff auto
-    git config --global color.status auto
-    git config --global diff.tool vimdiff
 }
 
 if [ -e "${TMP_FILE}" ]; then
@@ -182,7 +87,5 @@ fi
 export_current_host_ipv4_addr
 
 export_auto_path
-
-set_git_default_user_name_and_email
 
 mv ${TMP_FILE} ${OUTPUT_FILE}
