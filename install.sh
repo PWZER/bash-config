@@ -112,8 +112,8 @@ function install_vim_plugins() {
     fi
 
     # vim plugs
-    #vim +PlugInstall +qall
-    vim +PlugUpdate +qall
+    vim +PlugInstall +qall
+    #vim +PlugUpdate +qall
 
     # compile YouCompleteMe
     ycm_dir=${HOME}/.vim/plugged/YouCompleteMe
