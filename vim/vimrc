@@ -1,52 +1,87 @@
-set background=dark
 set encoding=utf-8
-"set termencoding=utf-8
+
+"背景颜色
+set background=dark
+
+"文件编码
 set fileencodings=utf-8,gbk,utf-16le,cp1252,iso-8859-15,ucs-bom
+
+"高亮指定列
 set colorcolumn=80,100
-"colorscheme molokai
+
+"高度当前列
+set cursorcolumn
+
+"高亮当前行
+set cursorline
+
+"主题配色
 colorscheme solarized
-"set term=xterm-256color
+"colorscheme molokai
+
+"关闭vi兼容模式
 set nocompatible
+
+"indent: 允许删除自动缩进的内容
+"eol: 允许删除换行符
+"start: 允许删除进入插入模式前已有的内容
 set backspace=indent,eol,start
-"set term=xterm
-"set term=screen
-"set t_Co=256
-"语法高亮
-"set mouse=a
-set ignorecase
-syntax enable
-syntax on
+
+"状态栏显示，0: never, 1: multi windows, 2: always
 set laststatus=2
+
+"光标距离顶部、底部最小行数
 set scrolloff=3
+
+"底部的行号等显示
 set ruler
+
 "Tab宽度
-set ts=4
-set expandtab
-"自动缩进
-set cindent
+set tabstop=4
+
 "缩进宽度
 set shiftwidth=4
+
+"编辑时可以将tab替换为空格
+set expandtab
+
+"自动缩进
+set cindent
+
 "关闭错误信息响铃
 set noerrorbells
+
 "显示行号
 set number
+
+"高亮查询
 set hlsearch
-set cursorcolumn
-set cursorline
-" 设置折叠
+
+"自动保存
+set autowrite
+
+"自动切换当前目录为当前文件所在的目录
+"set autochdir
+
+"代码折叠模式
 "set foldmethod=manual
-set fcs=vert:\|
-" 插入匹配括号
+
+"windows之前的填充符号
+set fillchars=vert:\|
+
+"插入匹配括号
 set showmatch
-" inoremap < <><LEFT>
 
-set guifont=YaHei\Consolas\Hybrid\11.5
+"GUI字体
+set guifont=YaHei\Consolas\Hybrid\12
 
-" 关闭文件时保存视图，打开文件时自动导入视图，配合代码折叠使用
-set viewdir=$HOME/.vim/view 
-"autocmd BufWrite,FileWritePost * mkview
-"autocmd BufRead,FileReadPost * loadview
+"语法高亮
+syntax enable
 
+"语法高亮默认颜色配置 hi-normal
+syntax on
+
+"============== Plugins List ==================================================
 call plug#begin('~/.vim/plugged')
 " golang
 Plug 'fatih/vim-go', { 'do': ':GoInstallBinaries' }
@@ -55,9 +90,6 @@ Plug 'fatih/vim-go', { 'do': ':GoInstallBinaries' }
 Plug 'Valloric/YouCompleteMe'
 
 " python 代码格式化
-Plug 'nvie/vim-flake8'
-
-" python 代码检查
 "Plug 'tell-k/vim-autopep8'
 Plug 'PWZER/vim-autopep8'
 
@@ -92,7 +124,7 @@ Plug 'kien/ctrlp.vim'
 "Plug 'SirVer/ultisnips'
 call plug#end()
 
-" ===== Plugin 'scrooloose/nerdtree' =====
+"=============== Plugin Config 'scrooloose/nerdtree' ==========================
 " 按下F2 调出/隐藏
 nmap <silent> <F2> :execute 'NERDTreeToggle ' . getcwd()<CR>
 let NERDTreeChDirMode=1
@@ -107,19 +139,19 @@ let NERDTreeMapOpenInTab='<ENTER>'
 " autocmd vimenter,TabNew * NERDTree
 " autocmd vimenter,TabNew * wincmd w
 
-" ===== Plugin 'tell-k/vim-autopep8' =====
+"=============== Plugin Config 'tell-k/vim-autopep8' ==========================
 autocmd FileType python noremap <buffer> <F8> :call Autopep8()<CR>
-" let g:autopep8_max_line_length=100
 let g:autopep8_global_config="${HOME}/.config/flake8"
 " autocmd BufWritePost *.py call Flake8()
 
-" ===== Plugin 'kien/ctrlp.vim' =====
+"=============== Plugin Config 'kien/ctrlp.vim' ===============================
 " Ctrl+p 快速搜索
 
-" ===== Plugin 'vim-syntastic/syntastic' =====
+"=============== Plugin Config 'vim-syntastic/syntastic' ======================
 let g:syntastic_python_python_exe = "~/.local/bin/python"
 map <F5> :SyntasticToggleMode<CR> :SyntasticCheck<CR>
 let g:syntastic_python_checkers = ['flake8']
+let g:syntastic_python_flake8_args = '--config=${HOME}/.config/flake8'
 set statusline+=%#warningmsg#
 set statusline+=%{SyntasticStatuslineFlag()}
 set statusline+=%*
@@ -128,7 +160,7 @@ let g:syntastic_auto_loc_list = 1
 let g:syntastic_check_on_open = 0
 let g:syntastic_check_on_wq = 1
 
-" ===== Plugin 'Valloric/YouCompleteMe' =====
+"=============== Plugin Config 'Valloric/YouCompleteMe' =======================
 " YouCompleteMe 功能
 let g:ycm_python_binary_path = "~/.local/bin/python"
 " 补全功能在注释中同样有效
@@ -137,7 +169,7 @@ let g:ycm_complete_in_comments=1
 let g:ycm_confirm_extra_conf=0
 " 开启 YCM 基于标签引擎
 let g:ycm_collect_identifiers_from_tags_files=1
-let g:ycm_global_ycm_extra_conf="~/.vim/bundle/YouCompleteMe/third_party/ycmd/cpp/ycm/.ycm_extra_conf.py"
+let g:ycm_global_ycm_extra_conf="~/.ycm_extra_conf.py"
 " 引入C++ 标准库tags，这个没有也没关系，只要.ycm_extra_conf.py文件中指定了正确的标准库路径
 " set tags+=/data/misc/software/misc./vim/stdcpp.tags
 " YCM 集成 OmniCppComplete 补全引擎，设置其快捷键
@@ -165,7 +197,7 @@ nnoremap <leader>gl :YcmCompleter GoToDeclaration<CR>
 nnoremap <leader>gf :YcmCompleter GoToDefinition<CR>
 nnoremap <leader>gd :YcmCompleter GoToDefinitionElseDeclaration<CR>
 
-" ===== Plugin 'vim-airline/vim-airline' =====
+"=============== Plugin Config 'vim-airline/vim-airline' ======================
 "let g:solarized_termcolors=256
 "let g:solarized_termtrans=1
 let g:airline_theme='solarized'
@@ -173,4 +205,5 @@ let g:airline_theme='solarized'
 let g:airline#extensions#tabline#enabled=1
 let g:airline#extensions#tabline#left_sep = ' '
 let g:airline#extensions#tabline#left_alt_sep = '|'
-" ==== END ====
+
+"=============== File End =====================================================
