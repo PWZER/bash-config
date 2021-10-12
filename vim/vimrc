@@ -83,127 +83,126 @@ syntax on
 
 "============== Plugins List ==================================================
 call plug#begin('~/.vim/plugged')
-" golang
+"golang
 Plug 'fatih/vim-go', { 'do': ':GoInstallBinaries' }
 
-" 代码补全
+"代码补全
 Plug 'Valloric/YouCompleteMe'
 
-" python 代码格式化
+"python 代码格式化
 "Plug 'tell-k/vim-autopep8'
 Plug 'PWZER/vim-autopep8'
 
-" 括号、引号补全
+"括号、引号补全
 Plug 'jiangmiao/auto-pairs'
 
-" 语法检查
+"语法检查
 Plug 'vim-syntastic/syntastic'
 
-" 快速注释
+"快速注释
 Plug 'scrooloose/nerdcommenter'
 
-" 状态栏
+"状态栏
 Plug 'vim-airline/vim-airline'
 Plug 'vim-airline/vim-airline-themes'
 
-" c++代码格式化
+"c++代码格式化
 Plug 'rhysd/vim-clang-format'
 
-" 目录树
+"目录树
 Plug 'scrooloose/nerdtree'
 
-" 快速查找文件
+"快速查找文件
 Plug 'kien/ctrlp.vim'
 
-" 对齐工具
+"对齐工具
 "Plug 'godlygeek/tabular'
 
-" 代码模板
+"代码模板
 "Plug 'aperezdc/vim-template'
 "Plug 'honza/vim-snippets'
 "Plug 'SirVer/ultisnips'
 call plug#end()
 
 "=============== Plugin Config 'scrooloose/nerdtree' ==========================
-" 按下F2 调出/隐藏
+"按下F2 调出/隐藏
 nmap <silent> <F2> :execute 'NERDTreeToggle ' . getcwd()<CR>
 let NERDTreeChDirMode=1
 let NERDTreeShowBookmarks=1
 let NERDTreeWinSize=28
 let NERDTreeShowHidden=1
 let NERDTreeIgnore=['\~$', '\.pyc$', '\.swp$', '\.git$']
-" 只在最左边的窗口打开
+"只在最左边的窗口打开
 autocmd bufenter * if (winnr("$") == 1 && exists("b:NERDTree") && b:NERDTree.isTabTree()) | q | endif
 let NERDTreeMapOpenInTab='<ENTER>'
-" 启动vim自动打开
-" autocmd vimenter,TabNew * NERDTree
-" autocmd vimenter,TabNew * wincmd w
+"启动vim自动打开
+"autocmd vimenter,TabNew * NERDTree
+"autocmd vimenter,TabNew * wincmd w
 
 "=============== Plugin Config 'tell-k/vim-autopep8' ==========================
 autocmd FileType python noremap <buffer> <F8> :call Autopep8()<CR>
 let g:autopep8_global_config="${HOME}/.config/flake8"
-" autocmd BufWritePost *.py call Flake8()
+"autocmd BufWritePost *.py call Flake8()
 
 "=============== Plugin Config 'kien/ctrlp.vim' ===============================
-" Ctrl+p 快速搜索
+"Ctrl+p 快速搜索
 
 "=============== Plugin Config 'vim-syntastic/syntastic' ======================
-let g:syntastic_python_python_exe = "~/.local/bin/python"
 map <F5> :SyntasticToggleMode<CR> :SyntasticCheck<CR>
-let g:syntastic_python_checkers = ['flake8']
-let g:syntastic_python_flake8_args = '--config=${HOME}/.config/flake8'
+let g:syntastic_python_python_exe="~/.local/bin/python"
+let g:syntastic_python_checkers=['flake8']
+let g:syntastic_python_flake8_args='--config=${HOME}/.config/flake8'
 set statusline+=%#warningmsg#
 set statusline+=%{SyntasticStatuslineFlag()}
 set statusline+=%*
-let g:syntastic_always_populate_loc_list = 0
-let g:syntastic_auto_loc_list = 1
-let g:syntastic_check_on_open = 0
-let g:syntastic_check_on_wq = 1
+let g:syntastic_always_populate_loc_list=0
+let g:syntastic_auto_loc_list=1
+"文件打开的时候执行语法校验
+let g:syntastic_check_on_open=0
+"保存退出的时候执行语法校验
+let g:syntastic_check_on_wq=1
 
 "=============== Plugin Config 'Valloric/YouCompleteMe' =======================
-" YouCompleteMe 功能
-let g:ycm_python_binary_path = "~/.local/bin/python"
-" 补全功能在注释中同样有效
+"YouCompleteMe 功能
+let g:ycm_python_binary_path="~/.local/bin/python"
+"补全功能在注释中同样有效
 let g:ycm_complete_in_comments=1
-" 允许 vim 加载 .ycm_extra_conf.py 文件，不再提示
+"允许 vim 加载 .ycm_extra_conf.py 文件，不再提示
 let g:ycm_confirm_extra_conf=0
-" 开启 YCM 基于标签引擎
+"开启 YCM 基于标签引擎
 let g:ycm_collect_identifiers_from_tags_files=1
 let g:ycm_global_ycm_extra_conf="~/.ycm_extra_conf.py"
-" 引入C++ 标准库tags，这个没有也没关系，只要.ycm_extra_conf.py文件中指定了正确的标准库路径
-" set tags+=/data/misc/software/misc./vim/stdcpp.tags
-" YCM 集成 OmniCppComplete 补全引擎，设置其快捷键
-" inoremap <leader>; <C-x><C-o>
-" 补全内容不以分割子窗口形式出现，只显示补全列表
+"引入C++ 标准库tags，这个没有也没关系，只要.ycm_extra_conf.py文件中指定了正确的标准库路径
+"set tags+=/data/misc/software/misc./vim/stdcpp.tags
+"YCM 集成 OmniCppComplete 补全引擎，设置其快捷键
+"inoremap <leader>; <C-x><C-o>
+"补全内容不以分割子窗口形式出现，只显示补全列表
 "set completeopt-=preview
-" 从第一个键入字符就开始罗列匹配项
+"从第一个键入字符就开始罗列匹配项
 let g:ycm_min_num_of_chars_for_completion=1
-" 禁止缓存匹配项，每次都重新生成匹配项
+"禁止缓存匹配项，每次都重新生成匹配项
 let g:ycm_cache_omnifunc=0
-" 语法关键字补全           
+"语法关键字补全
 let g:ycm_seed_identifiers_with_syntax=1
-" 修改对C函数的补全快捷键，默认是CTRL + space，修改为ALT + ;
-"let g:ycm_key_invoke_completion = '<M-;>'
-" 设置转到定义处的快捷键为ALT + G，这个功能非常赞
+"修改对C函数的补全快捷键，默认是CTRL + space，修改为ALT + ;
+"let g:ycm_key_invoke_completion='<M-;>'
+"设置转到定义处的快捷键为ALT + G，这个功能非常赞
 "nmap <M-g> :YcmCompleter GoToDefinitionElseDeclaration <C-R>=expand("<cword>")<CR><CR>
-" 开启语义补全
+"开启语义补全
 let g:ycm_seed_identifiers_with_syntax=1
 "autocmd InsertLeave * if pumvisible() == 0|pclose|endif
 "let g:ycm_autoclose_preview_window_after_insertion=1
-let g:ycm_autoclose_preview_window_after_completion = 1
-let g:ycm_collect_identifiers_from_comments_and_strings = 1
-" 快速跳转
+let g:ycm_autoclose_preview_window_after_completion=1
+let g:ycm_collect_identifiers_from_comments_and_strings=1
+"快速跳转
 nnoremap <leader>gl :YcmCompleter GoToDeclaration<CR>
 nnoremap <leader>gf :YcmCompleter GoToDefinition<CR>
 nnoremap <leader>gd :YcmCompleter GoToDefinitionElseDeclaration<CR>
 
 "=============== Plugin Config 'vim-airline/vim-airline' ======================
-"let g:solarized_termcolors=256
-"let g:solarized_termtrans=1
 let g:airline_theme='solarized'
-"let g:airline_theme='molokai'
 let g:airline#extensions#tabline#enabled=1
-let g:airline#extensions#tabline#left_sep = ' '
-let g:airline#extensions#tabline#left_alt_sep = '|'
+let g:airline#extensions#tabline#left_sep=' '
+let g:airline#extensions#tabline#left_alt_sep='|'
 
 "=============== File End =====================================================
