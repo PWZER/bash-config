@@ -131,7 +131,28 @@ function install_vim_plugins() {
     fi
 }
 
-source ${CUR_DIR}/auto.sh
+function install_dssh() {
+    case "$(uname)" in
+        "Linux")
+            filename="dssh-linux-amd64";;
+        "Darwin")
+            filename="dssh-darwin-amd64";;
+        *)
+            filename="";;
+    esac
+
+    if [ ! -z "${filename}" ]; then
+        if [ ${use_fastgit} -eq 1 ]; then
+            url="https://hub.fastgit.org/PWZER/dssh/releases/latest/download/${filename}"
+        else
+            url="https://github.com/PWZER/dssh/releases/latest/download/${filename}"
+        fi
+        curl -sSL ${url} -o ${HOME}/.local/bin/ds
+        chmod +x ${HOME}/.local/bin/ds
+    fi
+}
+
+. ${CUR_DIR}/auto.sh
 
 set_git_global_configs
 
@@ -164,5 +185,7 @@ link_file ${CUR_DIR}/vim/plug.vim ${HOME}/.vim/autoload/plug.vim
 if [ ${disabled_vim_plugin} -eq 0 ]; then
     install_vim_plugins
 fi
+
+install_dssh
 
 echo "Success"

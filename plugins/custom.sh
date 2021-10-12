@@ -7,3 +7,13 @@ function fixssh() {
         fi
     fi
 }
+
+function mem_cache_clean() {
+    if [ "$(uname)" = "Linux" ]; then
+        level=3
+        if [ $# -gt 0 ] && [ $1 -ge 1 ] && [ $1 -le 3 ]; then
+            level=$1
+        fi
+        sudo bash -c "sync; echo ${level} > /proc/sys/vm/drop_caches"
+    fi
+}
