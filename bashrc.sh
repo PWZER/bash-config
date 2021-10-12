@@ -104,7 +104,12 @@ fi
 
 # git 自动补全
 if [ -f ${CUR_DIR}/plugins/git-completion.bash ]; then
-    source ~/.bash/plugins/git-completion.bash
+    source ${CUR_DIR}/plugins/git-completion.bash
+fi
+
+# 自定义工具
+if [ -f ${CUR_DIR}/plugins/custom.sh ]; then
+    source ${CUR_DIR}/plugins/custom.sh
 fi
 
 # ssh config
