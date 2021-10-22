@@ -1,5 +1,5 @@
 if [ -r /etc/bashrc ]; then
-    source /etc/bashrc
+    . /etc/bashrc
 fi
 
 # 被后面所依赖，必须放在最前面
@@ -92,20 +92,16 @@ fi
 
 # bash 自动补全
 if [ -r /etc/profile.d/bash_completion.sh ]; then
-    source /etc/profile.d/bash_completion.sh
+    . /etc/profile.d/bash_completion.sh
 elif [ -r /usr/local/etc/profile.d/bash_completion.sh ]; then
-    source /usr/local/etc/profile.d/bash_completion.sh
+    . /usr/local/etc/profile.d/bash_completion.sh
 fi
 
-# git 命令提示符
-if [ -r ${CUR_DIR}/plugins/git-prompt.sh ]; then
-    source ${CUR_DIR}/plugins/git-prompt.sh
-fi
-
-# git 自动补全
-if [ -f ${CUR_DIR}/plugins/git-completion.bash ]; then
-    source ~/.bash/plugins/git-completion.bash
-fi
+for plugin_file in $(find ${CUR_DIR}/plugins -name "*.sh" -or -name "*.bash" 2>/dev/null); do
+    if [ -f ${plugin_file} ]; then
+        . ${plugin_file}
+    fi
+done
 
 # ssh config
 if [ -S ${SSH_AUTH_SOCK}  ] && ! [ -h ${SSH_AUTH_SOCK}  ]; then
@@ -115,12 +111,12 @@ fi
 
 # 自动生成配置
 if [ -r ${CUR_DIR}/config_auto.sh ]; then
-    source ${CUR_DIR}/config_auto.sh
+    . ${CUR_DIR}/config_auto.sh
 fi
 
 # 常规手动配置
 if [ -r ${CUR_DIR}/config.sh ]; then
-    source ${CUR_DIR}/config.sh
+    . ${CUR_DIR}/config.sh
 fi
 
 history -c && history -r ${CUSTOM_HISTORY_FILE}

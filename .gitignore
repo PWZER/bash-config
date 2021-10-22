@@ -3,3 +3,5 @@ config_auto.sh
 .config_auto.sh
 **/.DS_Store
 config/iterm2/
+plugins/docker.sh
+plugins/docker-compose.sh

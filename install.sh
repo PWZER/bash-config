@@ -104,6 +104,18 @@ function set_git_global_configs() {
     git config --global diff.tool vimdiff
 }
 
+function set_docker_configs() {
+    docker_etc=/Applications/Docker.app/Contents/Resources/etc
+    if [ "$(uname)" = "Darwin" ] && [ -d ${docker_etc} ]; then
+        if [ -f ${docker_etc}/docker.bash-completion ]; then
+            link_file ${docker_etc}/docker.bash-completion ${CUR_DIR}/plugins/docker.sh
+        fi
+        if [ -f ${docker_etc}/docker-compose.bash-completion ]; then
+            link_file ${docker_etc}/docker-compose.bash-completion ${CUR_DIR}/plugins/docker-compose.sh
+        fi
+    fi
+}
+
 function install_vim_plugins() {
     #use fastgit
     if [ ${use_fastgit} -eq 1 ]; then
@@ -112,8 +124,8 @@ function install_vim_plugins() {
     fi
 
     # vim plugs
-    #vim +PlugInstall +qall
-    vim +PlugUpdate +qall
+    vim +PlugInstall +qall
+    #vim +PlugUpdate +qall
 
     # compile YouCompleteMe
     ycm_dir=${HOME}/.vim/plugged/YouCompleteMe
@@ -155,6 +167,9 @@ link_file ${CUR_DIR}/tmux.conf ${HOME}/.tmux.conf
 
 # ssh config
 link_file ${CUR_DIR}/ssh/config ${HOME}/.ssh/config
+
+# docker config
+set_docker_configs
 
 # vim configs
 link_file ${CUR_DIR}/vim/vimrc ${HOME}/.vimrc
