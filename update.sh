@@ -29,7 +29,7 @@ update_file https://raw.githubusercontent.com/git/git/master/contrib/completion/
 
 # vim/vim_plug.vim
 update_file https://raw.githubusercontent.com/junegunn/vim-plug/master/plug.vim \
-    ${CUR_DIR}/vim/vim_plug.vim
+    ${CUR_DIR}/vim/plug.vim
 
 # vim/solarized.vim
 update_file https://raw.githubusercontent.com/altercation/solarized/master/vim-colors-solarized/colors/solarized.vim \
