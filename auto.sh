@@ -17,6 +17,10 @@ function export_auto_path() {
             if [ ! -z "${bin_path}" ]; then
                 bin_path_list="${bin_path_list} ${bin_path},$(realpath ${bin_path})"
             fi
+            sbin_path=$(/bin/ls -d ${name}/sbin 2> /dev/null | sort -r | head -n1)
+            if [ ! -z "${sbin_path}" ]; then
+                bin_path_list="${bin_path_list} ${sbin_path},$(realpath ${sbin_path})"
+            fi
         done
 
         # 根据 realpath 去重
