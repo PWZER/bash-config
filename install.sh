@@ -7,11 +7,12 @@ user_email=""
 network_device=""
 use_fastgit=0
 disabled_vim_plugin=0
+download_dssh=0
 
 
 TEMP=`getopt -o h  --long help,fastgit,no-vim-plug,name:,hostname:,email:,device: -- "$@"`
 eval set -- "$TEMP"
-USAGE="Usage: ./install.sh [--no-vim-plug] [--fastgit] [--name=<name>] [--email=<email>] [--device=<device> | --hostname=<hostname>]"
+USAGE="Usage: ./install.sh [--no-vim-plug] [--fastgit] [--dssh] [--name=<name>] [--email=<email>] [--device=<device> | --hostname=<hostname>]"
 
 while true ; do
     case "$1" in
@@ -27,6 +28,8 @@ while true ; do
             disabled_vim_plugin=1; shift 1;;
         --fastgit)
             use_fastgit=1; shift 1;;
+        --dssh)
+            download_dssh=1; shift 1;;
         -h|--help)
             echo ${USAGE}; exit 0; shift 1;;
         --) shift; break;;
@@ -201,6 +204,8 @@ if [ ${disabled_vim_plugin} -eq 0 ]; then
     install_vim_plugins
 fi
 
-install_dssh
+if [ ${download_dssh} -eq 1 ]; then
+    install_dssh
+fi
 
 echo "Success"
