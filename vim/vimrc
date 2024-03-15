@@ -7,7 +7,7 @@ set background=dark
 set fileencodings=utf-8,gbk,utf-16le,cp1252,iso-8859-15,ucs-bom
 
 "高亮指定列
-set colorcolumn=80,100
+set colorcolumn=100,120
 
 "高度当前列
 set cursorcolumn
@@ -124,13 +124,9 @@ Plug 'scrooloose/nerdtree'
 "快速查找文件
 Plug 'kien/ctrlp.vim'
 
-"对齐工具
-"Plug 'godlygeek/tabular'
+"copilot
+Plug 'github/copilot.vim'
 
-"代码模板
-"Plug 'aperezdc/vim-template'
-"Plug 'honza/vim-snippets'
-"Plug 'SirVer/ultisnips'
 call plug#end()
 
 "=============== Plugin Config 'scrooloose/nerdtree' ==========================
