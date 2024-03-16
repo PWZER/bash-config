@@ -29,10 +29,6 @@ alias l='ls -CF'
 alias ll="ls -lF"
 alias la='ls -A'
 
-if [ "$(uname)" = "Linux" ]; then
-    alias docker="sudo docker"
-fi
-
 # base config
 export EDITOR=vim
 export LANG=en_US.UTF-8
@@ -67,6 +63,7 @@ export BASH_SILENCE_DEPRECATION_WARNING=1
 export GOPATH=${HOME}/.go
 export GO111MODULE=on
 export GOPROXY=https://goproxy.cn
+export PATH=${GOPATH}/bin:${PATH}
 
 if [ "$(uname)" = "Darwin" ]; then
     export HOMEBREW_NO_AUTO_UPDATE=1
