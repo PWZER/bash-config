@@ -60,7 +60,7 @@ shopt -s histappend
 export BASH_SILENCE_DEPRECATION_WARNING=1
 
 # Go 环境
-export GOPATH=${HOME}/.go
+export GOPATH=${HOME}/.govm/go
 export GO111MODULE=on
 export GOPROXY=https://goproxy.cn
 export PATH=${GOPATH}/bin:${PATH}
