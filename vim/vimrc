@@ -96,12 +96,10 @@ call plug#begin('~/.vim/plugged')
 Plug 'fatih/vim-go', { 'do': ':GoInstallBinaries' }
 
 "代码补全
-"Plug 'Valloric/YouCompleteMe'
-Plug 'https://jihulab.com/PWZER/YouCompleteMe.git'
+Plug 'ycm-core/YouCompleteMe'
 
 "python 代码格式化
-"Plug 'tell-k/vim-autopep8'
-Plug 'PWZER/vim-autopep8'
+Plug 'tell-k/vim-autopep8'
 
 "括号、引号补全
 Plug 'jiangmiao/auto-pairs'
@@ -110,7 +108,7 @@ Plug 'jiangmiao/auto-pairs'
 Plug 'vim-syntastic/syntastic'
 
 "快速注释
-Plug 'scrooloose/nerdcommenter'
+Plug 'preservim/nerdcommenter'
 
 "状态栏
 Plug 'vim-airline/vim-airline'
@@ -125,7 +123,7 @@ Plug 'scrooloose/nerdtree'
 "快速查找文件
 Plug 'kien/ctrlp.vim'
 
-"copilot
+"Copilot
 Plug 'github/copilot.vim'
 
 call plug#end()
@@ -172,7 +170,7 @@ let g:ycm_python_binary_path="~/.local/bin/python"
 "补全功能在注释中同样有效
 let g:ycm_complete_in_comments=1
 "允许 vim 加载 .ycm_extra_conf.py 文件，不再提示
-let g:ycm_confirm_extra_conf=1
+let g:ycm_confirm_extra_conf=0
 "开启 YCM 基于标签引擎
 let g:ycm_collect_identifiers_from_tags_files=1
 "补全内容不以分割子窗口形式出现，只显示补全列表
