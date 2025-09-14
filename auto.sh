@@ -10,7 +10,7 @@ function export_auto_path() {
     # auto append /usr/local/opt bins
     if [ "$(uname)" = "Darwin" ]; then
         bin_path_list=()
-        names=$(/bin/ls -d /usr/local/opt/*)
+        names=$(/bin/ls -d /usr/local/opt/* /opt/homebrew/opt/*)
         for name in ${names[@]}
         do
             bin_path=$(/bin/ls -d ${name}/bin 2> /dev/null | sort -r | head -n1)

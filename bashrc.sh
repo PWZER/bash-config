@@ -4,11 +4,17 @@ fi
 
 # 被后面所依赖，必须放在最前面
 if [ "$(uname)" = "Darwin" ]; then
-    if [ -d /usr/local/opt/gnu-getopt/bin ]; then
-        export PATH=/usr/local/opt/gnu-getopt/bin:${PATH}
+    if [ -d /usr/local/opt ]; then
+        HOMEBREW_DIR=/usr/local/opt
+    elif [ -d /opt/homebrew/opt ]; then
+        HOMEBREW_DIR=/opt/homebrew/opt
     fi
-    if [ -d "/usr/local/opt/coreutils/libexec/gnubin" ]; then
-        export PATH=/usr/local/opt/coreutils/libexec/gnubin:${PATH}
+
+    if [ -d ${HOMEBREW_DIR}/gnu-getopt/bin ]; then
+        export PATH=/opt/homebrew/opt/gnu-getopt/bin:${PATH}
+    fi
+    if [ -d ${HOMEBREW_DIR}/coreutils/libexec/gnubin ]; then
+        export PATH=/opt/homebrew/opt/coreutils/libexec/gnubin:${PATH}
     fi
 fi
 
@@ -97,6 +103,8 @@ if [ -r /etc/profile.d/bash_completion.sh ]; then
     . /etc/profile.d/bash_completion.sh
 elif [ -r /usr/local/etc/profile.d/bash_completion.sh ]; then
     . /usr/local/etc/profile.d/bash_completion.sh
+elif [ -r /opt/homebrew/etc/bash_completion ]; then
+    . /opt/homebrew/etc/bash_completion
 fi
 
 for plugin_file in $(find ${CUR_DIR}/plugins -name "*.sh" -or -name "*.bash" 2>/dev/null); do
