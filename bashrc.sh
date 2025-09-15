@@ -4,17 +4,15 @@ fi
 
 # 被后面所依赖，必须放在最前面
 if [ "$(uname)" = "Darwin" ]; then
-    if [ -d /usr/local/opt ]; then
-        HOMEBREW_DIR=/usr/local/opt
-    elif [ -d /opt/homebrew/opt ]; then
-        HOMEBREW_DIR=/opt/homebrew/opt
+    HOMEBREW_PREFIX=$(brew --prefix 2>/dev/null)
+    if [ -d ${HOMEBREW_DIR}/opt/coreutils/libexec/gnubin ]; then
+        export PATH=${HOMEBREW_DIR}/opt/coreutils/libexec/gnubin:${PATH}
     fi
-
-    if [ -d ${HOMEBREW_DIR}/gnu-getopt/bin ]; then
-        export PATH=/opt/homebrew/opt/gnu-getopt/bin:${PATH}
+    if [ -d ${HOMEBREW_PREFIX}/opt/gnu-getopt/bin ]; then
+        export PATH=${HOMEBREW_PREFIX}/opt/gnu-getopt/bin:${PATH}
     fi
-    if [ -d ${HOMEBREW_DIR}/coreutils/libexec/gnubin ]; then
-        export PATH=/opt/homebrew/opt/coreutils/libexec/gnubin:${PATH}
+    if [ -d ${HOMEBREW_PREFIX}/bin ]; then
+        export PATH=${HOMEBREW_PREFIX}/bin:${PATH}
     fi
 fi
 
