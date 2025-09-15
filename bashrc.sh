@@ -2,11 +2,12 @@ if [ -r /etc/bashrc ]; then
     . /etc/bashrc
 fi
 
+HOMEBREW_PREFIX=$(brew --prefix 2>/dev/null)
+
 # 被后面所依赖，必须放在最前面
 if [ "$(uname)" = "Darwin" ]; then
-    HOMEBREW_PREFIX=$(brew --prefix 2>/dev/null)
-    if [ -d ${HOMEBREW_DIR}/opt/coreutils/libexec/gnubin ]; then
-        export PATH=${HOMEBREW_DIR}/opt/coreutils/libexec/gnubin:${PATH}
+    if [ -d ${HOMEBREW_PREFIX}/opt/coreutils/libexec/gnubin ]; then
+        export PATH=${HOMEBREW_PREFIX}/opt/coreutils/libexec/gnubin:${PATH}
     fi
     if [ -d ${HOMEBREW_PREFIX}/opt/gnu-getopt/bin ]; then
         export PATH=${HOMEBREW_PREFIX}/opt/gnu-getopt/bin:${PATH}
@@ -99,10 +100,8 @@ fi
 # bash 自动补全
 if [ -r /etc/profile.d/bash_completion.sh ]; then
     . /etc/profile.d/bash_completion.sh
-elif [ -r /usr/local/etc/profile.d/bash_completion.sh ]; then
-    . /usr/local/etc/profile.d/bash_completion.sh
-elif [ -r /opt/homebrew/etc/profile.d/bash_completion.sh ]; then
-    . /opt/homebrew/etc/profile.d/bash_completion.sh
+elif [ -r ${HOMEBREW_PREFIX}/etc/profile.d/bash_completion.sh ]; then
+    . ${HOMEBREW_PREFIX}/etc/profile.d/bash_completion.sh
 fi
 
 for plugin_file in $(find ${CUR_DIR}/plugins -name "*.sh" -or -name "*.bash" 2>/dev/null); do
