@@ -103,8 +103,8 @@ if [ -r /etc/profile.d/bash_completion.sh ]; then
     . /etc/profile.d/bash_completion.sh
 elif [ -r /usr/local/etc/profile.d/bash_completion.sh ]; then
     . /usr/local/etc/profile.d/bash_completion.sh
-elif [ -r /opt/homebrew/etc/bash_completion ]; then
-    . /opt/homebrew/etc/bash_completion
+elif [ -r /opt/homebrew/etc/profile.d/bash_completion.sh ]; then
+    . /opt/homebrew/etc/profile.d/bash_completion.sh
 fi
 
 for plugin_file in $(find ${CUR_DIR}/plugins -name "*.sh" -or -name "*.bash" 2>/dev/null); do
